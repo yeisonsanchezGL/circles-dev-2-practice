@@ -1,0 +1,13 @@
+You are building a tiny product, not a snippet.
+ Step 1: Write a short implementation plan (5–8 bullets) and a checklist of acceptance criteria.
+ Step 2: Implement the Tic Tac Toe web app using plain HTML/CSS/JS (no frameworks), with files index.html, style.css, app.js.
+ Step 3: Verify against the checklist and, if anything is missing, fix it before final output.
+ Constraints:
+
+* No external libraries
+* Keep JS under ~150 lines if possible
+* Handle all win/draw edge cases
+     Output format:
+* Start with PLAN.md
+* Then CHECKLIST.md
+* Then code blocks for each file

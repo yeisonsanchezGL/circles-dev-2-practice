@@ -1,0 +1,17 @@
+Build a Tic Tac Toe game as a small web app using plain HTML/CSS/JS (no frameworks).
+Requirements:
+
+* 3x3 grid UI, click to place X/O
+* Show current player
+* Detect win (rows/cols/diagonals) and draw
+* Highlight winning line
+* “Restart” button resets state
+* Prevent moves after game ends
+     Deliverables:
+* Provide 3 files: index.html, style.css, app.js
+* Keep JS readable and modular (functions for makeMove, checkWinner, reset)
+* Include brief instructions to run locally
+
+Why this works:
+
+* You removed ambiguity and forced the agent to produce a complete, runnable artifact.

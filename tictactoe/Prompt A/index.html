@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tic Tac Toe</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Tic Tac Toe</h1>
+      <p class="turn-indicator" id="turn">Player X's turn</p>
+    </header>
+
+    <div class="board" id="board">
+      <button type="button" class="cell" data-index="0" aria-label="Cell 1"></button>
+      <button type="button" class="cell" data-index="1" aria-label="Cell 2"></button>
+      <button type="button" class="cell" data-index="2" aria-label="Cell 3"></button>
+      <button type="button" class="cell" data-index="3" aria-label="Cell 4"></button>
+      <button type="button" class="cell" data-index="4" aria-label="Cell 5"></button>
+      <button type="button" class="cell" data-index="5" aria-label="Cell 6"></button>
+      <button type="button" class="cell" data-index="6" aria-label="Cell 7"></button>
+      <button type="button" class="cell" data-index="7" aria-label="Cell 8"></button>
+      <button type="button" class="cell" data-index="8" aria-label="Cell 9"></button>
+    </div>
+
+    <div class="scoreboard">
+      <div class="score" id="score-x">
+        <span class="score-label">X</span>
+        <span class="score-value" id="wins-x">0</span>
+      </div>
+      <div class="score" id="score-draw">
+        <span class="score-label">Draw</span>
+        <span class="score-value" id="draws">0</span>
+      </div>
+      <div class="score" id="score-o">
+        <span class="score-label">O</span>
+        <span class="score-value" id="wins-o">0</span>
+      </div>
+    </div>
+
+    <button type="button" class="btn-reset" id="reset">New game</button>
+  </div>
+
+  <script src="game.js"></script>
+</body>
+</html>

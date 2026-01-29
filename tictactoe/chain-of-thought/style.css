@@ -1,0 +1,104 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: system-ui, -apple-system, sans-serif;
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+  color: #eee;
+}
+
+.game {
+  text-align: center;
+  padding: 2rem;
+}
+
+h1 {
+  margin: 0 0 1rem;
+  font-size: 1.75rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+}
+
+.status {
+  margin: 0 0 1.5rem;
+  font-size: 1rem;
+  color: #a0a0a0;
+}
+
+#current-player {
+  font-weight: 600;
+  color: #4fc3f7;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+  width: min(280px, 90vw);
+  margin: 0 auto 1.5rem;
+  aspect-ratio: 1;
+}
+
+.cell {
+  border: 2px solid #37474f;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  font-size: 2rem;
+  font-weight: 700;
+  cursor: pointer;
+  color: #fff;
+  transition: background 0.15s, border-color 0.15s, transform 0.1s;
+}
+
+.cell:hover:not(.taken) {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: #546e7a;
+}
+
+.cell:active:not(.taken) {
+  transform: scale(0.98);
+}
+
+.cell.taken {
+  cursor: default;
+}
+
+.cell.x {
+  color: #4fc3f7;
+}
+
+.cell.o {
+  color: #81c784;
+}
+
+.cell.winner {
+  background: rgba(76, 175, 80, 0.35);
+  border-color: #81c784;
+  color: #c8e6c9;
+}
+
+.restart {
+  padding: 0.6rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #1a1a2e;
+  background: #4fc3f7;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.15s, transform 0.1s;
+}
+
+.restart:hover {
+  background: #81d4fa;
+}
+
+.restart:active {
+  transform: scale(0.98);
+}

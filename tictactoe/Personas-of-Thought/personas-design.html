@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tic-Tac-Toe Design — Personas of Thought</title>
+  <style>
+    :root {
+      --bg: #1a1b26;
+      --surface: #24283b;
+      --text: #c0caf5;
+      --muted: #565f89;
+      --accent: #7aa2f7;
+      --x: #f7768e;
+      --o: #9ece6a;
+      --pro: #9ece6a;
+      --con: #f7768e;
+    }
+    * { box-sizing: border-box; }
+    body {
+      font-family: "Segoe UI", system-ui, sans-serif;
+      line-height: 1.6;
+      color: var(--text);
+      background: var(--bg);
+      max-width: 52rem;
+      margin: 0 auto;
+      padding: 2rem 1.5rem;
+    }
+    h1 {
+      font-size: 1.5rem;
+      color: var(--accent);
+      margin-bottom: 0.5rem;
+    }
+    .subtitle { color: var(--muted); font-size: 0.95rem; margin-bottom: 2rem; }
+    h2 {
+      font-size: 1.2rem;
+      color: var(--accent);
+      margin-top: 2rem;
+      margin-bottom: 1rem;
+      padding-bottom: 0.35rem;
+      border-bottom: 1px solid var(--surface);
+    }
+    h3 {
+      font-size: 1rem;
+      color: var(--text);
+      margin-top: 1.25rem;
+      margin-bottom: 0.5rem;
+    }
+    ul { margin: 0.35rem 0; padding-left: 1.5rem; }
+    li { margin: 0.2rem 0; }
+    .pros { color: var(--pro); }
+    .cons { color: var(--con); }
+    .preferred {
+      background: var(--surface);
+      border-left: 3px solid var(--accent);
+      padding: 0.75rem 1rem;
+      margin-top: 1rem;
+      font-size: 0.95rem;
+    }
+    .preferred strong { color: var(--accent); }
+    p { margin: 0.5rem 0; }
+    .persona { margin-bottom: 2.5rem; }
+  </style>
+</head>
+<body>
+  <h1>Tic-Tac-Toe Design — Personas of Thought</h1>
+  <p class="subtitle">Design only. No implementation. Each persona proposes options and states preferences.</p>
+
+  <section class="persona">
+    <h2>Pragmatic Engineer</h2>
+    <p><em>Focus: correctness, simplicity, maintainability</em></p>
+
+    <h3>Board representation</h3>
+    <ul>
+      <li><strong>Flat array (length 9):</strong> Single array, indices 0–8 map to cells left-to-right, top-to-bottom. <span class="pros">Pros:</span> Simple, easy to loop and index; no nesting. <span class="cons">Cons:</span> Row/col logic needs index math.</li>
+      <li><strong>2D array (3×3):</strong> <code>board[row][col]</code>. <span class="pros">Pros:</span> Matches grid mentally; row/col access direct. <span class="cons">Cons:</span> Nested loops; slightly more structure.</li>
+      <li><strong>Object with cell keys:</strong> e.g. <code>{ "0,0": "X", "1,1": "O" }</code>. <span class="pros">Pros:</span> Explicit coordinates; extensible. <span class="cons">Cons:</span> More verbose; string keys; no natural ordering.</li>
+    </ul>
+
+    <h3>Turn handling</h3>
+    <ul>
+      <li><strong>Boolean <code>isXTurn</code>:</strong> Flip each move. <span class="pros">Pros:</span> Minimal state; one variable. <span class="cons">Cons:</span> Easy to forget to flip; no move count.</li>
+      <li><strong>Current player string:</strong> <code>currentPlayer = "X" | "O"</code>. <span class="pros">Pros:</span> Self-documenting; easy to pass. <span class="cons">Cons:</span> Slightly more to update.</li>
+      <li><strong>Move count (0–9):</strong> Derive player from <code>moveCount % 2</code>. <span class="pros">Pros:</span> Gives game length; useful for draw and replay. <span class="cons">Cons:</span> Indirect; keep count in sync.</li>
+    </ul>
+
+    <h3>Win detection</h3>
+    <ul>
+      <li><strong>Check after every move:</strong> Given last move’s position, check its row, column, and diagonals (if any). <span class="pros">Pros:</span> Only 4 checks per move; O(1) relative to board. <span class="cons">Cons:</span> Must pass last move; repeated line logic if not factored.</li>
+      <li><strong>Predefined win lines:</strong> Array of 8 line index sets; after each move, see if any line is all same player. <span class="pros">Pros:</span> Clear, declarative; easy to test. <span class="cons">Cons:</span> Iterates up to 8 lines; needs “all cells in line equal” helper.</li>
+      <li><strong>Full board scan:</strong> Scan all rows, columns, diagonals every time. <span class="pros">Pros:</span> No “last move” needed; uniform logic. <span class="cons">Cons:</span> Redundant work; more loops.</li>
+    </ul>
+
+    <h3>AI strategy</h3>
+    <ul>
+      <li><strong>If/else priority list:</strong> e.g. win if possible → block → center → corners → edges. <span class="pros">Pros:</span> Obvious to read and debug; no search. <span class="cons">Cons:</span> Order-sensitive; harder to extend to stronger play.</li>
+      <li><strong>Minimax:</strong> Full game tree, optimal play. <span class="pros">Pros:</span> Correct and well-defined. <span class="cons">Cons:</span> Overkill for 3×3; more code and concepts.</li>
+      <li><strong>Lookup table:</strong> All 5k+ states precomputed; AI picks best move by state key. <span class="pros">Pros:</span> Fast; behavior explicit. <span class="cons">Cons:</span> Large table; not instructive for learning.</li>
+    </ul>
+
+    <h3>UI layout</h3>
+    <ul>
+      <li><strong>Single grid component:</strong> One semantic grid (e.g. one parent with 9 cells). <span class="pros">Pros:</span> One place for board logic and styling. <span class="cons">Cons:</span> All behavior in one component unless you split logic.</li>
+      <li><strong>Grid + status bar:</strong> Grid plus separate area for turn/win/draw message. <span class="pros">Pros:</span> Clear separation of “board” vs “game state text”. <span class="cons">Cons:</span> Two UI regions to keep in sync.</li>
+      <li><strong>Sections: board, status, controls:</strong> Board, message area, and “New game” (and optionally settings) as distinct sections. <span class="pros">Pros:</span> Good for future features; clear layout. <span class="cons">Cons:</span> More structure for a minimal game.</li>
+    </ul>
+
+    <div class="preferred">
+      <strong>Preferred choices:</strong> Board → flat array. Turn → current player string. Win → check after every move using last position. AI → if/else priority list. UI → grid + status bar.
+    </div>
+  </section>
+
+  <section class="persona">
+    <h2>UX Designer</h2>
+    <p><em>Focus: usability, accessibility, layout, visual clarity</em></p>
+
+    <h3>Board representation</h3>
+    <ul>
+      <li><strong>Semantic grid (e.g. CSS Grid):</strong> 3×3 grid; cells are focusable/clickable areas. <span class="pros">Pros:</span> Aligns with layout and keyboard flow. <span class="cons">Cons:</span> Representation in JS is separate (array vs DOM).</li>
+      <li><strong>ARIA grid role:</strong> <code>role="grid"</code>, row/cell roles, aria labels for position. <span class="pros">Pros:</span> Good for screen readers and navigation. <span class="cons">Cons:</span> More markup and attributes to maintain.</li>
+      <li><strong>List of buttons:</strong> 9 buttons in a list, styled as grid. <span class="pros">Pros:</span> Native focus and click; no extra divs for “cells”. <span class="cons">Cons:</span> List semantics don’t match “grid” mentally.</li>
+    </ul>
+
+    <h3>Turn handling</h3>
+    <ul>
+      <li><strong>Visible “Current turn: X”:</strong> User always sees whose turn it is. <span class="pros">Pros:</span> Reduces confusion. <span class="cons">Cons:</span> Needs a dedicated status element.</li>
+      <li><strong>Highlight current player:</strong> e.g. “X” bold or colored for current turn. <span class="pros">Pros:</span> Compact. <span class="cons">Cons:</span> Can be missed if users don’t notice the change.</li>
+      <li><strong>Announce turn via live region:</strong> <code>aria-live</code> announces “X’s turn” on change. <span class="pros">Pros:</span> Accessible for screen-reader users. <span class="cons">Cons:</span> Must avoid overly verbose announcements.</li>
+    </ul>
+
+    <h3>Win detection</h3>
+    <ul>
+      <li><strong>Visual highlight of winning line:</strong> Winning row/col/diagonal gets a distinct style. <span class="pros">Pros:</span> Clear feedback; satisfying. <span class="cons">Cons:</span> Requires win detection to return which line won.</li>
+      <li><strong>Message only:</strong> “X wins!” with no line highlight. <span class="pros">Pros:</span> Simple. <span class="cons">Cons:</span> Weaker feedback.</li>
+      <li><strong>Message + confetti/simple animation:</strong> Text plus light celebration. <span class="pros">Pros:</span> Engaging. <span class="cons">Cons:</span> Can distract; motion/contrast considerations.</li>
+    </ul>
+
+    <h3>AI strategy</h3>
+    <ul>
+      <li><strong>“Easy” only:</strong> Random or simple rules. <span class="pros">Pros:</span> Forgiving for beginners. <span class="cons">Cons:</span> Boring for others.</li>
+      <li><strong>Easy / Hard:</strong> Easy = random/simple; Hard = optimal (e.g. minimax or hard-coded optimal). <span class="pros">Pros:</span> Choice without complexity. <span class="cons">Cons:</span> Need two code paths.</li>
+      <li><strong>Difficulty + “Hint”:</strong> Difficulty plus optional “show me a good move”. <span class="pros">Pros:</span> Learnable; supports exploration. <span class="cons">Cons:</span> More UI and logic.</li>
+    </ul>
+
+    <h3>UI layout</h3>
+    <ul>
+      <li><strong>Centered board, message below:</strong> Board in middle; turn/result under it. <span class="pros">Pros:</span> Clear hierarchy; works on small screens. <span class="cons">Cons:</span> Can feel sparse on large screens.</li>
+      <li><strong>Card layout:</strong> Board inside a card; title “Tic-Tac-Toe” and “New game” in header/footer. <span class="pros">Pros:</span> Contained; clear “game” boundary. <span class="cons">Cons:</span> Extra chrome.</li>
+      <li><strong>Minimal: board + one line of status:</strong> No card; board and one status line (turn or result). <span class="pros">Pros:</span> Very simple; low visual noise. <span class="cons">Cons:</span> Less structure for branding or extra controls.</li>
+    </ul>
+
+    <div class="preferred">
+      <strong>Preferred choices:</strong> Board → semantic grid (e.g. CSS Grid) with clear cell areas. Turn → visible “Current turn: X” plus optional live region. Win → visual highlight of winning line. AI → Easy / Hard plus optional Hint. UI → centered board with message below.
+    </div>
+  </section>
+
+  <section class="persona">
+    <h2>Performance Engineer</h2>
+    <p><em>Focus: efficiency, avoiding unnecessary computation</em></p>
+
+    <h3>Board representation</h3>
+    <ul>
+      <li><strong>Typed array (e.g. Int8):</strong> Numbers for empty (0), X (1), O (2). <span class="pros">Pros:</span> Compact; fast array access. <span class="cons">Cons:</span> Less readable; magic numbers unless named constants.</li>
+      <li><strong>Flat array of strings:</strong> <code>["", "X", "O", ...]</code>. <span class="pros">Pros:</span> Readable; no conversion for display. <span class="cons">Cons:</span> Slightly more memory than numbers.</li>
+      <li><strong>Two bitboards:</strong> One 9-bit mask per player; cell i = bit i. <span class="pros">Pros:</span> Win check via bit ops and precomputed masks; very fast. <span class="cons">Cons:</span> Opaque; harder to debug and teach.</li>
+    </ul>
+
+    <h3>Turn handling</h3>
+    <ul>
+      <li><strong>Move count only:</strong> Single number; player = count % 2. <span class="pros">Pros:</span> One variable; no redundant state. <span class="cons">Cons:</span> Always need count for current player.</li>
+      <li><strong>Boolean:</strong> One flip per move. <span class="pros">Pros:</span> Cheap. <span class="cons">Cons:</span> No built-in move count for draw.</li>
+      <li><strong>Cached “current player”:</strong> Updated only on move. <span class="pros">Pros:</span> No repeated modulo; one read for UI. <span class="cons">Cons:</span> Must keep in sync with moves.</li>
+    </ul>
+
+    <h3>Win detection</h3>
+    <ul>
+      <li><strong>Bitmask vs predefined win masks:</strong> For the moving player, OR current cell into their bitboard; AND with each of 8 win masks. <span class="pros">Pros:</span> Very fast; few operations. <span class="cons">Cons:</span> Only fits bitboard representation.</li>
+      <li><strong>Check only affected lines:</strong> Given last move (row, col), check that row, that column, and diagonals if on diagonal. <span class="pros">Pros:</span> Constant work per move; works with any board representation. <span class="cons">Cons:</span> Need last move and small amount of indexing.</li>
+      <li><strong>Cached win state:</strong> Update “has win” only when a cell in a potential winning line changes. <span class="pros">Pros:</span> No recomputation if you already track lines. <span class="cons">Cons:</span> More state and update logic.</li>
+    </ul>
+
+    <h3>AI strategy</h3>
+    <ul>
+      <li><strong>Precomputed move table:</strong> State → best move; O(1) lookup. <span class="pros">Pros:</span> Minimal CPU per move. <span class="cons">Cons:</span> Table size and build step.</li>
+      <li><strong>Minimax with memoization:</strong> Cache by board state. <span class="pros">Pros:</span> Optimal without full table. <span class="cons">Cons:</span> More logic and memory than simple heuristics.</li>
+      <li><strong>Fixed priority list:</strong> Win/block/center/corners/edges. <span class="pros">Pros:</span> No allocation; predictable cost. <span class="cons">Cons:</span> Not optimal; still fine for 3×3.</li>
+    </ul>
+
+    <h3>UI layout</h3>
+    <ul>
+      <li><strong>Single container, CSS Grid:</strong> One wrapper; grid for layout; minimal DOM. <span class="pros">Pros:</span> Few nodes; layout handled by CSS. <span class="cons">Cons:</span> Styling and structure must stay in sync.</li>
+      <li><strong>Canvas:</strong> Draw board and symbols. <span class="pros">Pros:</span> One element; full control. <span class="cons">Cons:</span> No built-in focus/keyboard per cell; accessibility harder.</li>
+      <li><strong>Static HTML grid, update text only:</strong> 9 cells in DOM; JS only updates text/content. <span class="pros">Pros:</span> No re-renders of structure; minimal DOM churn. <span class="cons">Cons:</span> Requires clean separation of “structure” vs “content”.</li>
+    </ul>
+
+    <div class="preferred">
+      <strong>Preferred choices:</strong> Board → flat array of strings. Turn → move count with derived player. Win → check only affected lines from last move. AI → fixed priority list. UI → single container with CSS Grid, update content only.
+    </div>
+  </section>
+
+  <section class="persona">
+    <h2>AI Researcher</h2>
+    <p><em>Focus: game logic, AI decision-making clarity, explainability</em></p>
+
+    <h3>Board representation</h3>
+    <ul>
+      <li><strong>Immutable state snapshots:</strong> Each state is a value (e.g. string or array copy); transitions produce new state. <span class="pros">Pros:</span> Easy to reason about and reuse for search; no accidental mutation. <span class="cons">Cons:</span> Allocations per move.</li>
+      <li><strong>Flat array with copy-on-move:</strong> Mutate during game; when needed for AI, pass a copy. <span class="pros">Pros:</span> Simple main loop; copy only when branching. <span class="cons">Cons:</span> Must remember when to copy.</li>
+      <li><strong>State as string:</strong> e.g. <code>"X-O-XO--X"</code>. <span class="pros">Pros:</span> Hashable for memoization; compact; easy to log. <span class="cons">Cons:</span> Parsing for display; easy to get indices wrong.</li>
+    </ul>
+
+    <h3>Turn handling</h3>
+    <ul>
+      <li><strong>Explicit in state:</strong> e.g. <code>{ board: [...], turn: "X" }</code>. <span class="pros">Pros:</span> Every state is self-contained; good for search and replay. <span class="cons">Cons:</span> Slightly more data.</li>
+      <li><strong>Derived from board:</strong> Count X and O; next player is implied. <span class="pros">Pros:</span> No redundancy. <span class="cons">Cons:</span> Ambiguous for “empty board”; need convention.</li>
+      <li><strong>Move history:</strong> Ordered list of moves; board and turn derived by replaying. <span class="pros">Pros:</span> Full history; undo and analysis. <span class="cons">Cons:</span> Cost to derive current state; more complexity.</li>
+    </ul>
+
+    <h3>Win detection</h3>
+    <ul>
+      <li><strong>Pure function: state → outcome:</strong> <code>getOutcome(state)</code> → "X" | "O" | "draw" | null. <span class="pros">Pros:</span> Testable; no side effects; reusable in AI. <span class="cons">Cons:</span> Must define “state” clearly.</li>
+      <li><strong>Returns winning line:</strong> Function returns winner plus indices of winning line. <span class="pros">Pros:</span> Supports UI highlight and explanation (“X wins via top row”). <span class="cons">Cons:</span> Slightly more return structure.</li>
+      <li><strong>Lazy evaluation:</strong> Check only when asked (e.g. after human move or when AI needs outcome). <span class="pros">Pros:</span> No unnecessary work. <span class="cons">Cons:</span> Same as “check after move” if used that way.</li>
+    </ul>
+
+    <h3>AI strategy</h3>
+    <ul>
+      <li><strong>Minimax with value + best move:</strong> Returns (score, move). <span class="pros">Pros:</span> Well-defined optimal play; teachable. <span class="cons">Cons:</span> More code than heuristics.</li>
+      <li><strong>Rule-based with explicit priorities:</strong> Ordered list: “if can win then … else if must block then …”. <span class="pros">Pros:</span> Explainable (“I blocked your fork”); easy to debug. <span class="cons">Cons:</span> Incomplete for perfect play if not careful.</li>
+      <li><strong>Minimax + move explanation:</strong> Minimax choice plus a short reason (e.g. “win”, “block”, “fork”). <span class="pros">Pros:</span> Optimal and explainable. <span class="cons">Cons:</span> Need to attach reasons to moves or recompute.</li>
+    </ul>
+
+    <h3>UI layout</h3>
+    <ul>
+      <li><strong>Board as primary; status secondary:</strong> Layout emphasizes board; state (turn, result) is clearly separate. <span class="pros">Pros:</span> Matches “state + view” mentally. <span class="cons">Cons:</span> Purely presentational.</li>
+      <li><strong>Optional “why” panel:</strong> When AI moves, show optional “Why this move?”. <span class="pros">Pros:</span> Supports learning and transparency. <span class="cons">Cons:</span> Extra UI and logic to generate reasons.</li>
+      <li><strong>State inspector (dev):</strong> Show current state (e.g. board string) for debugging. <span class="pros">Pros:</span> Helps development and teaching. <span class="cons">Cons:</span> Not for end users.</li>
+    </ul>
+
+    <div class="preferred">
+      <strong>Preferred choices:</strong> Board → state as string (or immutable snapshot). Turn → explicit in state. Win → pure function returning outcome and winning line. AI → rule-based with explicit priorities (or minimax + explanation). UI → board primary; optional “why” panel.
+    </div>
+  </section>
+
+  <section class="persona">
+    <h2>Novice Teacher</h2>
+    <p><em>Focus: readability, learnability, beginner-friendly structure</em></p>
+
+    <h3>Board representation</h3>
+    <ul>
+      <li><strong>Array of 9 elements:</strong> <code>[null, null, "X", "O", ...]</code>; index = cell number. <span class="pros">Pros:</span> Matches “number the cells 0–8”; one concept. <span class="cons">Cons:</span> Row/col from index needs a tiny formula.</li>
+      <li><strong>Named positions:</strong> e.g. <code>topLeft</code>, <code>center</code>, <code>bottomRight</code>. <span class="pros">Pros:</span> Reads like English. <span class="cons">Cons:</span> Nine names; verbose; harder to loop.</li>
+      <li><strong>2D array with row/col:</strong> <code>board[0][0]</code> = top-left. <span class="pros">Pros:</span> Matches “row, column” from math. <span class="cons">Cons:</span> Nested arrays; two indices to manage.</li>
+    </ul>
+
+    <h3>Turn handling</h3>
+    <ul>
+      <li><strong>Variable <code>currentPlayer</code>:</strong> Assign "X" or "O"; swap after each move. <span class="pros">Pros:</span> Reads like “whose turn is it?”. <span class="cons">Cons:</span> Must remember to swap.</li>
+      <li><strong><code>moveCount</code>:</strong> Increment each move; odd = X, even = O (with 0-based start). <span class="pros">Pros:</span> Introduces “count” and “even/odd”. <span class="cons">Cons:</span> Less direct than a single “current player” name.</li>
+      <li><strong>Array of moves:</strong> e.g. <code>moves = [2, 4, 6]</code> (cell indices). <span class="pros">Pros:</span> Natural “replay” and “undo” story. <span class="cons">Cons:</span> Deriving current player and board is an extra step.</li>
+    </ul>
+
+    <h3>Win detection</h3>
+    <ul>
+      <li><strong>List of winning triples:</strong> e.g. <code>[[0,1,2], [3,4,5], ...]</code>; check if any triple is all X or all O. <span class="pros">Pros:</span> “Winning line = three in a row” is explicit; one loop over 8 lines. <span class="cons">Cons:</span> Need a small helper to check a line.</li>
+      <li><strong>Big if/else:</strong> e.g. “if 0,1,2 same then win”. <span class="pros">Pros:</span> No loops; very explicit. <span class="cons">Cons:</span> Repetitive; 16 conditions; hard to maintain.</li>
+      <li><strong>Check row/column/diagonals of last move:</strong> “Given the cell just played, check its row, column, and diagonals.” <span class="pros">Pros:</span> Teaches “only need to check what changed”. <span class="cons">Cons:</span> Slightly more abstract than “all lines”.</li>
+    </ul>
+
+    <h3>AI strategy</h3>
+    <ul>
+      <li><strong>Simple priority list in plain English:</strong> “First try to win, then block, then center, then corner…”. <span class="pros">Pros:</span> Mirrors how humans think; easy to tweak and discuss. <span class="cons">Cons:</span> Order matters; can have gaps.</li>
+      <li><strong>Random valid move:</strong> Pick random empty cell. <span class="pros">Pros:</span> Easiest to implement and understand. <span class="cons">Cons:</span> Very weak; not interesting.</li>
+      <li><strong>Minimax with comments:</strong> Full minimax with step-by-step comments (“this is the recursive case”). <span class="pros">Pros:</span> Teaches recursion and game theory. <span class="cons">Cons:</span> Heavy for true beginners.</li>
+    </ul>
+
+    <h3>UI layout</h3>
+    <ul>
+      <li><strong>Numbered cells (1–9):</strong> Cells show 1–9 when empty; replace with X/O when played. <span class="pros">Pros:</span> Matches “cell index” or “cell number”; helps debugging and talking about moves. <span class="cons">Cons:</span> Slightly busier visually.</li>
+      <li><strong>Clear sections with labels:</strong> “Board”, “Turn”, “Result”, “New game”. <span class="pros">Pros:</span> Teaches structure and semantics. <span class="cons">Cons:</span> More text on screen.</li>
+      <li><strong>One big grid, message below:</strong> No numbers; just 9 cells and one status line. <span class="pros">Pros:</span> Clean; minimal. <span class="cons">Cons:</span> No explicit mapping “cell 5” for teaching.</li>
+    </ul>
+
+    <div class="preferred">
+      <strong>Preferred choices:</strong> Board → array of 9 elements (0–8). Turn → variable <code>currentPlayer</code>. Win → list of 8 winning triples; “check if any line is all same player”. AI → simple priority list in plain English. UI → numbered cells (1–9) or clearly labeled sections.
+    </div>
+  </section>
+
+  <p class="subtitle" style="margin-top: 2rem;">No personas merged. No final solution decided. No code — design only.</p>
+</body>
+</html>

@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Design Decision Summary — Tic Tac Toe</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      font-family: system-ui, -apple-system, sans-serif;
+      line-height: 1.5;
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 2rem;
+      background: #1a1a2e;
+      color: #eee;
+    }
+    h1 {
+      font-size: 1.5rem;
+      margin-bottom: 0.5rem;
+      color: #e94560;
+    }
+    h2 {
+      font-size: 1.1rem;
+      margin-top: 1.5rem;
+      margin-bottom: 0.75rem;
+      color: #0ea5e9;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1rem 0;
+      font-size: 0.95rem;
+    }
+    th, td {
+      border: 1px solid #0f3460;
+      padding: 0.6rem 0.75rem;
+      text-align: left;
+      vertical-align: top;
+    }
+    th {
+      background: #16213e;
+      color: #0ea5e9;
+      font-weight: 600;
+    }
+    tr:nth-child(even) td { background: rgba(22, 33, 62, 0.6); }
+    tr:hover td { background: rgba(31, 52, 96, 0.8); }
+    .note {
+      margin-top: 1.25rem;
+      padding: 0.75rem 1rem;
+      background: #16213e;
+      border-left: 4px solid #e94560;
+      border-radius: 0 6px 6px 0;
+      font-size: 0.9rem;
+    }
+    code { color: #0ea5e9; font-size: 0.9em; }
+  </style>
+</head>
+<body>
+  <h1>Design Decision Summary</h1>
+  <p>Tic Tac Toe — Tree-of-Thoughts choices</p>
+
+  <h2>Strategy choices</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Area</th>
+        <th>Strategy chosen</th>
+        <th>Why</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>HTML board</strong></td>
+        <td>9 <code>&lt;button&gt;</code> elements in a wrapper, each with <code>data-index="0"</code>–<code>"8"</code></td>
+        <td>Semantic, accessible, one listener per cell or delegation.</td>
+      </tr>
+      <tr>
+        <td><strong>Board styling</strong></td>
+        <td>CSS Grid (<code>grid-template-columns: repeat(3, 1fr)</code>)</td>
+        <td>Equal 3×3 layout with minimal code; Flexbox would need explicit widths.</td>
+      </tr>
+      <tr>
+        <td><strong>Game state</strong></td>
+        <td>Module-level variables: <code>board</code> (flat array of 9), <code>currentPlayer</code>, <code>gameOver</code>, <code>mode</code></td>
+        <td>Single source of truth, simple reset, no framework.</td>
+      </tr>
+      <tr>
+        <td><strong>Turns</strong></td>
+        <td>Toggle <code>currentPlayer</code> after each valid move; X always starts.</td>
+        <td>Clear and easy to reset.</td>
+      </tr>
+      <tr>
+        <td><strong>Win detection</strong></td>
+        <td>Eight hardcoded lines (3 rows, 3 cols, 2 diagonals); check after each move.</td>
+        <td>Correct and readable for 3×3.</td>
+      </tr>
+      <tr>
+        <td><strong>Draw</strong></td>
+        <td>No winner and <code>board.every(cell => cell !== '')</code>.</td>
+        <td>Covers all draw edge cases.</td>
+      </tr>
+      <tr>
+        <td><strong>AI</strong></td>
+        <td>Easy = random empty cell. Medium = win if possible → block → else random.</td>
+        <td>Simple, no minimax; good balance.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="note">
+    <strong>Alternatives not chosen:</strong> 2D array (unnecessary), DOM-as-state (harder to test), Flexbox (Grid fits 3×3 better), minimax (overkill for ~150-line goal).
+  </div>
+</body>
+</html>

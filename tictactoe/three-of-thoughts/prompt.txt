@@ -1,0 +1,47 @@
+Implement the Tic Tac Toe web app using plain HTML/CSS/JS (no frameworks), with files index.html, style.css, app.js
+
+Use a Tree-of-Thoughts approach before writing the final code.
+
+Tree-of-Thoughts instructions:
+
+1. Generate multiple design approaches for the game:
+   - Board representation
+   - Turn handling
+   - Win detection
+   - AI move logic (simple, intermediate, advanced)
+
+2. For each approach:
+   - Briefly evaluate pros and cons
+   - Consider simplicity, correctness, and readability
+
+3. Select the best overall approach.
+
+4. Only after selecting the best approach:
+   - Implement the full solution as a single HTML file
+   - Include minimal but clear comments
+   - Ensure the game is playable in the browser without external libraries
+
+Output format:
+- First: a short “Decision Summary” explaining which approach was chosen and why
+- Second: the complete HTML codeTree-of-Thoughts steps:
+
+1. Generate at least three different implementation strategies:
+   - How to structure the HTML board
+   - How to style the board (CSS Grid vs Flexbox)
+   - How to manage game state in JavaScript
+   - How to detect wins and handle turns
+
+2. For each strategy:
+   - Briefly analyze advantages and disadvantages
+   - Consider readability, maintainability, and simplicity
+
+3. Select the best overall strategy and explain why it was chosen.
+
+4. After selecting the best strategy:
+   - Implement the game using a SINGLE HTML file
+   - Do not use external libraries or frameworks
+   - Ensure the game works by just opening the file in a browser
+
+Output format:
+1. "Design Decision Summary" (short)
+2. Complete code (HTML + CSS + JS)

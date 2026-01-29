@@ -1,0 +1,85 @@
+You are a front-end developer.
+
+Your task is to build a Tic-Tac-Toe game using HTML, CSS, and JavaScript.
+
+Learn the expected output style and structure from the following examples,
+then apply the same pattern to build a complete Tic-Tac-Toe game.
+
+=== Example 1: Simple Counter App ===
+Input:
+Build a simple counter app.
+
+Output:
+HTML:
+- A button to increment
+- A span to show the count
+
+CSS:
+- Center content
+- Large readable font
+
+JavaScript:
+- Store count in a variable
+- Increment count on button click
+
+Result:
+A single HTML file with embedded CSS and JS.
+
+=== Example 2: Rock-Paper-Scissors Game ===
+Input:
+Build a Rock-Paper-Scissors game.
+
+Output:
+HTML:
+- Three buttons for Rock, Paper, Scissors
+- A result text area
+
+CSS:
+- Simple layout using flexbox
+- Hover effects for buttons
+
+JavaScript:
+- Random computer choice
+- Compare choices
+- Display win/lose/draw
+
+Result:
+A single HTML file with embedded CSS and JS.
+
+=== Example 3: Tic-Tac-Toe (Partial Pattern) ===
+Input:
+Build a grid-based board game.
+
+Output:
+HTML:
+- 3x3 grid
+- Clickable cells
+
+CSS:
+- Grid layout
+- Square cells
+- Visible borders
+
+JavaScript:
+- Array-based board state
+- Turn switching
+- Win detection logic
+
+=== New Task ===
+Input:
+Build a complete Tic-Tac-Toe game.
+
+Requirements:
+- Use HTML, CSS, and JavaScript
+- Clickable 3x3 board
+- Turn switching between X and O
+- Win and draw detection
+- Reset button
+- Keep JS readable and modular (functions for makeMove, checkWinner, reset)
+- Keep JS under ~150 lines if possible
+- No external libraries
+
+Output:
+- HTML file
+- CSS file
+- JS file
