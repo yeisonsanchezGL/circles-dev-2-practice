@@ -1,0 +1,60 @@
+---
+alwaysApply: true
+---
+
+# Conway's Game of Life – AI Assistant Rules (Always Apply)
+
+This project is test-driven. 
+The AI assistant must prioritize correctness and test coverage over brevity.
+
+## Mandatory Testing Rules (Always Apply)
+
+- Every new feature MUST include tests.
+- Every modified function MUST include updated or new tests.
+- No production code should be generated without corresponding tests.
+
+## Core Architecture
+
+- Separate simulation logic from UI.
+- The Game of Life engine must be pure and deterministic.
+- UI (Streamlit) must not contain business logic.
+- No state mutations outside controlled functions.
+- Grid state must be stored as a NumPy array.
+
+## Technology Constraints
+
+- Python 3.11+
+- Streamlit for UI
+- NumPy for grid operations
+- No per-cell Python loops for neighbor calculations.
+- Use vectorized NumPy operations only.
+
+## Coding Rules
+- Never use bare `except`
+- Raise typed domain errors
+- Use structured JSON logging only (no PII)
+- Always use logger from `common/logging.py`
+- All DB access must go through repositories
+- Forbid N+1 queries
+- Add indexes in migrations
+- Validate all inputs
+- Use parameterized queries only
+- Secrets must come from environment variables only
+
+## Conventions
+
+- snake_case for files
+- PascalCase for classes
+- Explicit `__all__` in packages
+- No hardcoded user-facing strings (use locale utils)
+
+## Testing Requirements
+- Use pytest
+- Use fixture builders in `tests/fixtures`
+- Maintain >90% coverage for changed code
+
+## Documentation
+
+- Include docstrings for core engine functions.
+- Explain wrap vs non-wrap logic clearly.
+- Add comments only where logic is non-obvious.

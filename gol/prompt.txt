@@ -1,0 +1,105 @@
+You are an expert Python developer and UI engineer. Build Conway’s Game of Life as a complete, runnable Python app.
+
+IMPORTANT REASONING INSTRUCTION:
+- Think step-by-step internally to plan architecture, state, and edge cases.
+- Do NOT reveal chain-of-thought. Only output the final code and a short “Decisions” summary.
+
+FEATURES (MUST HAVE):
+1) Grid size selection:
+   - Sidebar controls for rows and cols (number inputs).
+   - “Apply/Reset” button reinitializes the grid using the selected preset or blank.
+   - Cell size control (pixels) for display.
+
+2) Initial structure selection:
+   - Dropdown of presets:
+     - Blank (empty)
+     - Random (with density slider)
+     - Glider
+     - Lightweight Spaceship
+     - Gosper Glider Gun
+     - Pulsar
+   - When a preset is chosen, place it centered on the grid (or top-left if too small).
+   - If the grid is too small to fit a preset, show a user-friendly warning and do not crash.
+
+3) Editing:
+   - Click to toggle a cell.
+   - Click-and-drag to paint alive cells; optionally a mode toggle: Paint / Erase / Toggle.
+   - “Clear” button.
+
+4) Simulation controls:
+   - Play / Pause
+   - Step (advance one generation)
+   - Speed control (ms per tick slider)
+   - Generation counter
+   - Wrap mode toggle:
+     - “Toroidal wrap” ON/OFF (when OFF, edges are dead beyond bounds)
+
+5) Correct Life rules:
+   - Survival with 2 or 3 neighbors, birth with exactly 3, otherwise dead.
+
+ENGINEERING REQUIREMENTS:
+- Store the grid as a NumPy array (dtype=uint8 or bool).
+- Compute next generation efficiently:
+  - If wrap ON: use np.roll-based neighbor summation.
+  - If wrap OFF: use padding/slicing neighbor summation (no Python loops over cells).
+- Keep simulation logic separate from UI (engine functions in the same file or clearly separated section).
+- Use Streamlit session_state for persistent grid, play state, speed, generation.
+- Ensure the autoplay loop doesn’t spawn multiple loops:
+  - Use Streamlit’s st.experimental_rerun pattern safely and a timestamp-based tick, or an st_autorefresh approach.
+- Include small self-check functions for:
+  - neighbor counting correctness (wrap vs no-wrap)
+  - preset placement bounds
+
+ACCEPTANCE CRITERIA:
+- I can choose grid size and preset, click Apply/Reset, and see it rendered.
+- I can edit by clicking/dragging (paint/erase/toggle).
+- Play/Pause/Step/Speed/Wrap all work.
+- Presets are correctly shaped and centered when possible.
+- Runs smoothly for moderate grids (e.g., 100x100).
+
+
+--------------------------------
+Error when start simulation
+---------------------------------
+The current implementation has this issue:
+When clicking play for simulation isn't generating automatically generations.
+Diagnose the cause. Then propose the smallest code change that fixes it.
+ Rules:
+
+* Do not rewrite the entire project
+* Only change what’s necessary
+* Output a unified diff patch for the file(s) you modify
+* After the patch, explain in 3 bullets why it fixes the issue
+
+
+The current implementation has this issue:
+When clicking play for simulation isn't generating automatically generations it freezes and shows the error            
+{"timestamp": "2026-02-12 00:20:04,451", "level": "ERROR", "logger": "__main__", "message": "self_check_failed", "exception": "Traceback (most recent call last):\n  File \"/Users/yeison.sanchez/Documents/circles-dev-2-practice/gol/app.py\", line 279, in main\n    self_check_preset_bounds()\n  File \"/Users/yeison.sanchez/Documents/circles-dev-2-practice/gol/app.py\", line 154, in self_check_preset_bounds\n    assert err is None and g[4, 4] == 1\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError"}
+Diagnose the cause. Then propose the smallest code change that fixes it.
+ Rules:
+
+* Do not rewrite the entire project
+* Only change what’s necessary
+* Output a unified diff patch for the file(s) you modify
+* After the patch, explain in 3 bullets why it fixes the issue
+
+The current implementation has this issue:
+When clicking play for simulation seems like application freezes and dont show any log. the generations dont autoincrement
+Diagnose the cause. Then propose the smallest code change that fixes it.
+ Rules:
+
+* Do not rewrite the entire project
+* Only change what’s necessary
+* Output a unified diff patch for the file(s) you modify
+* After the patch, explain in 3 bullets why it fixes the issue
+
+
+The current implementation has this issue:
+When clicking play for simulation the generations runs but not rendering the current generation need to pause to show 
+Diagnose the cause. Then propose the smallest code change that fixes it.
+ Rules:
+
+* Do not rewrite the entire project
+* Only change what’s necessary
+* Output a unified diff patch for the file(s) you modify
+* After the patch, explain in 3 bullets why it fixes the issue
