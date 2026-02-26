@@ -59,3 +59,20 @@ Output format:
 1) Print the full file tree
 2) Then provide code for every file
 3) Then provide run instructions (docker commands + sample curl)
+
+
+-------
+Prompt to validate edge cases
+-------
+ct as a QA engineer + backend engineer pair.
+
+First: create a risk-based test plan by inspecting the current implementation.
+- Identify at least 15 edge cases and label each with severity (High/Med/Low).
+- Convert at least 10 of them into pytest tests (failing first if needed), then implement code changes to make them pass.
+
+Then:
+- Refactor only as necessary to keep code clean and readable.
+- Ensure Decimal math and 2-decimal rounding is consistent.
+- Add CHANGES.md and PATCH.diff artifacts.
+
+Do NOT ask me for edge cases; derive them from the code and expected business behavior.
