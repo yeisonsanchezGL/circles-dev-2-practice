@@ -1,0 +1,61 @@
+You are a senior backend engineer. Build a small Python feature from scratch.
+
+Feature: Order totals calculation with discount rules and MongoDB persistence.
+
+Hard requirement: Everything must run in Docker using docker-compose (one command to start app + MongoDB).
+- FastAPI app container
+- MongoDB container
+- Optional Mongo Express container for easy DB inspection (nice for demo)
+
+Tech requirements:
+- Python 3.11
+- FastAPI + Uvicorn
+- PyMongo
+- Clean architecture: domain (models/rules), service layer, repository layer
+- Unit tests with pytest (run inside container)
+- Use Decimal for money; round to 2 decimals at the end
+- Consistent JSON output (use strings for money to avoid float issues, or use floats but be consistent)
+
+Endpoints:
+1) POST /orders/preview
+   Input: customerId, items[{sku,name,qty,unitPrice}], optional couponCode
+   Output: subtotal, discountsApplied[{code,type,amount}], discountTotal, total
+   No persistence
+
+2) POST /orders
+   Same input; calculates totals and saves to MongoDB collection "orders"
+   Returns saved order including id
+
+3) GET /orders/{id}
+   Returns the persisted order
+
+Discount rules (apply in this deterministic order):
+- Line discount BULK10: for each item with qty >= 10 apply 10% off that line (qty*unitPrice*0.10)
+- Order discount ORDER5: if subtotal >= 100 apply $5 off
+- Coupon discount WELCOME15: if couponCode == "WELCOME15" apply 15% off subtotal but capped at $20
+- Safety cap: total discount cannot exceed 30% of subtotal. If it does, reduce the last applied discount to fit the cap.
+
+Persistence:
+- MongoDB database: "shop"
+- Collection: "orders"
+- Store the request data + computed totals + createdAt
+- Create indexes on createdAt and customerId
+- Use ObjectId and return it as string in API
+
+Docker:
+- Provide Dockerfile for the app
+- Provide docker-compose.yml that starts:
+  - api (FastAPI on port 8000)
+  - mongo (port 27017)
+  - mongo-express (port 8081)
+- Use environment variables for Mongo connection (MONGO_URI)
+- Use a .env example file
+- Add a Makefile or README commands for:
+  - docker compose up --build
+  - running tests in container
+  - sample curl calls for preview/create/get
+
+Output format:
+1) Print the full file tree
+2) Then provide code for every file
+3) Then provide run instructions (docker commands + sample curl)
